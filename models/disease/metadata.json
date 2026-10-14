@@ -1,0 +1,17 @@
+{
+  "model_name": "MobileNetV3_Small_TransferLearning",
+  "architecture": "mobilenet_v3_small",
+  "num_classes": 17,
+  "input_shape": [3, 224, 224],
+  "normalization": {
+    "mean": [0.485, 0.456, 0.406],
+    "std": [0.229, 0.224, 0.225]
+  },
+  "supported_crops": ["Tomato", "Potato", "Corn (Maize)"],
+  "dataset": "PlantVillage (Hughes & Salathe, 2015)",
+  "dataset_license": "Creative Commons CC0 1.0 Universal Public Domain",
+  "confidence_threshold": 0.60,
+  "uncertainty_action": "Flag result as preliminary; recommend physical confirmation with Krishi Vigyan Kendra (KVK) officer",
+  "version": "1.0.0",
+  "field_validation_status": "Laboratory-trained model; unverified on heterogeneous open-field ambient lighting conditions"
+}

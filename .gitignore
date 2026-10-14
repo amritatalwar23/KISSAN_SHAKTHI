@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Environment Variables & Secrets
+.env
+*.env.local
+*.pem
+*.key
+
+# Machine Learning & Large Artifacts
+models/disease/*.pth
+models/disease/*.pt
+models/disease/*.onnx
+models/disease/*.h5
+data/plantvillage/
+data/raw/
+*.tar.gz
+*.zip
+
+# Database
+*.db
+*.sqlite3
+
+# Testing & Caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

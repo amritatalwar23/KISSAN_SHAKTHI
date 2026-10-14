@@ -1,0 +1,80 @@
+[
+  {
+    "id": "kvk-bangalore-rural",
+    "name": "Krishi Vigyan Kendra, Bangalore Rural (Hadonahalli)",
+    "organization": "University of Agricultural Sciences, Bangalore (UASB) & ICAR",
+    "type": "Krishi Vigyan Kendra (KVK)",
+    "state": "Karnataka",
+    "district": "Bangalore Rural",
+    "address": "Hadonahalli, Tubagere Hobli, Doddaballapura Taluk, Bengaluru Rural District, Karnataka - 561205",
+    "phone": "080-27638068",
+    "email": "kvk.BengaluruRural@icar.gov.in",
+    "official_link": "https://kvk.icar.gov.in",
+    "verified_on": "2026-03-01"
+  },
+  {
+    "id": "kvk-dharwad",
+    "name": "Krishi Vigyan Kendra, Dharwad (Saidapur Farm)",
+    "organization": "University of Agricultural Sciences, Dharwad (UASD) & ICAR",
+    "type": "Krishi Vigyan Kendra (KVK)",
+    "state": "Karnataka",
+    "district": "Dharwad",
+    "address": "Agricultural Research Station Premises, Saidapur Farm, Dharwad, Karnataka - 580005",
+    "phone": "0836-2444272",
+    "email": "kvk.Dharwad@icar.gov.in",
+    "official_link": "https://kvkdharwad.uasd.edu",
+    "verified_on": "2026-03-01"
+  },
+  {
+    "id": "kvk-mysore",
+    "name": "ICAR-JSS Krishi Vigyan Kendra, Suttur (Mysuru)",
+    "organization": "JSS Mahavidyapeetha & ICAR",
+    "type": "Krishi Vigyan Kendra (KVK)",
+    "state": "Karnataka",
+    "district": "Mysore",
+    "address": "Suttur, Nanjangud Taluk, Mysuru District, Karnataka - 571129",
+    "phone": "08221-232218",
+    "email": "jsskvk@gmail.com",
+    "official_link": "http://www.jsskvk.in",
+    "verified_on": "2026-03-01"
+  },
+  {
+    "id": "kvk-pune",
+    "name": "ICAR-KVK Baramati (Sharadanagar)",
+    "organization": "Agricultural Development Trust Baramati & ICAR",
+    "type": "Krishi Vigyan Kendra (KVK)",
+    "state": "Maharashtra",
+    "district": "Pune",
+    "address": "Sharadanagar, Malegaon Khurd, Baramati, Dist. Pune, Maharashtra - 413115",
+    "phone": "02112-255207",
+    "email": "kvkbaramati@yahoo.com",
+    "official_link": "https://www.kvkbaramati.com",
+    "verified_on": "2026-03-01"
+  },
+  {
+    "id": "kvk-varanasi",
+    "name": "Krishi Vigyan Kendra, Varanasi (Barkachha)",
+    "organization": "Banaras Hindu University (BHU) & ICAR",
+    "type": "Krishi Vigyan Kendra (KVK)",
+    "state": "Uttar Pradesh",
+    "district": "Varanasi",
+    "address": "Rajiv Gandhi South Campus, Barkachha, Mirzapur / Institute of Agril. Sciences, BHU, Varanasi, UP - 221005",
+    "phone": "0542-2368993",
+    "email": "kvkbhu@gmail.com",
+    "official_link": "https://kvk.icar.gov.in",
+    "verified_on": "2026-03-01"
+  },
+  {
+    "id": "kcc-national",
+    "name": "Kisan Call Centre (All India Toll-Free)",
+    "organization": "Department of Agriculture & Farmers Welfare, Ministry of Agriculture, Govt of India",
+    "type": "Government Helpline & Extension",
+    "state": "All",
+    "district": "All Districts",
+    "address": "Ministry of Agriculture & Farmers Welfare, Krishi Bhawan, New Delhi - 110001",
+    "phone": "1800-180-1551",
+    "email": "agri-callcenter@nic.in",
+    "official_link": "https://dacc.gov.in",
+    "verified_on": "2026-03-01"
+  }
+]

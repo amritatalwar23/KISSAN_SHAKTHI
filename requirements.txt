@@ -1,0 +1,29 @@
+# Kisan Shakti - Dependencies
+# Core Backend
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+pydantic>=2.6.0
+python-multipart>=0.0.9
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Computer Vision & Deep Learning
+torch>=2.1.0
+torchvision>=0.16.0
+pillow>=10.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+pandas>=2.1.0
+
+# Vector Retrieval & Language AI
+# Optional local vector DB: sentence-transformers, faiss-cpu or chromadb
+# Default retrieval engine utilizes scikit-learn TF-IDF / BM25 / Cosine similarity for 100% offline reliability
+
+# Web Frontend & UI
+streamlit>=1.32.0
+plotly>=5.18.0
+
+# Testing
+pytest>=8.0.0
+httpx>=0.27.0

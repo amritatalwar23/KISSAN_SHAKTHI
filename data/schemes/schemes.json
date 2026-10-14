@@ -1,0 +1,157 @@
+[
+  {
+    "id": "pm-kisan",
+    "name": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+    "ministry": "Ministry of Agriculture and Farmers Welfare, Govt of India",
+    "level": "Central",
+    "state": "All",
+    "target_beneficiaries": "All landholding farmer families with cultivable land subject to exclusion criteria",
+    "benefits": "Direct income support of ₹6,000 per year in three equal installments of ₹2,000 directly into bank accounts via DBT.",
+    "eligibility_criteria": [
+      "Must own cultivable agricultural land in their name",
+      "Valid Aadhaar card linked with bank account",
+      "e-KYC completed on the official portal",
+      "Institutional landholders and high-income/tax-paying individuals are excluded"
+    ],
+    "documents_required": [
+      "Aadhaar Card",
+      "Land ownership record (Pahani / RoR / 7/12 extract)",
+      "Bank passbook details with IFSC code",
+      "Active mobile number linked to Aadhaar"
+    ],
+    "official_link": "https://pmkisan.gov.in",
+    "last_verified": "2026-03-15",
+    "status": "Active"
+  },
+  {
+    "id": "pmfby",
+    "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "ministry": "Ministry of Agriculture and Farmers Welfare, Govt of India",
+    "level": "Central",
+    "state": "All",
+    "target_beneficiaries": "All farmers growing notified crops in notified areas including sharecroppers and tenant farmers",
+    "benefits": "Comprehensive crop insurance coverage against non-preventable natural risks from pre-sowing to post-harvest. Low uniform premium: 2% for Kharif crops, 1.5% for Rabi crops, and 5% for commercial/horticultural crops, with remaining subsidized by govt.",
+    "eligibility_criteria": [
+      "Farmers having an insurable interest in notified crops in notified areas",
+      "Enrolled through bank (for loanee farmers) or National Crop Insurance Portal (for non-loanee farmers) before cutoff date"
+    ],
+    "documents_required": [
+      "Aadhaar Card",
+      "Land possession certificate / tenancy agreement",
+      "Sowing certificate / declaration",
+      "Bank account passbook"
+    ],
+    "official_link": "https://pmfby.gov.in",
+    "last_verified": "2026-03-15",
+    "status": "Active"
+  },
+  {
+    "id": "kcc",
+    "name": "Kisan Credit Card (KCC) Scheme",
+    "ministry": "Ministry of Finance & Ministry of Agriculture and Farmers Welfare",
+    "level": "Central",
+    "state": "All",
+    "target_beneficiaries": "Owner cultivators, tenant farmers, sharecroppers, and SHGs of farmers, fisheries, and animal husbandry",
+    "benefits": "Timely short-term credit for cultivation expenses, post-harvest expenses, produce marketing, and maintenance of farm assets at a subsidized interest rate of 4% per annum (with prompt repayment incentive).",
+    "eligibility_criteria": [
+      "All farmers—individuals/joint borrowers who are owner cultivators",
+      "Tenant farmers, oral lessees, and sharecroppers",
+      "Self Help Groups (SHGs) or Joint Liability Groups (JLGs) of farmers"
+    ],
+    "documents_required": [
+      "Duly filled application form",
+      "Identity proof (Aadhaar / Voter ID / PAN)",
+      "Address proof",
+      "Land records verified by revenue authority"
+    ],
+    "official_link": "https://www.myscheme.gov.in/schemes/kcc",
+    "last_verified": "2026-03-15",
+    "status": "Active"
+  },
+  {
+    "id": "soil-health-card",
+    "name": "Soil Health Card Scheme (SHC)",
+    "ministry": "Department of Agriculture and Farmers Welfare, Govt of India",
+    "level": "Central",
+    "state": "All",
+    "target_beneficiaries": "All farmers across India holding agricultural land",
+    "benefits": "Provides printed soil test reports with 12 crucial parameters (N, P, K, S, Zn, Fe, Cu, Mn, Bo, pH, EC, OC) and customized dosage recommendations for fertilizers and micronutrients.",
+    "eligibility_criteria": [
+      "All farmers holding agricultural land whose soil samples are collected by the state agriculture department or participating KVK"
+    ],
+    "documents_required": [
+      "Farmer ID / Aadhaar Card",
+      "Land survey number and location coordinates"
+    ],
+    "official_link": "https://soilhealth.dac.gov.in",
+    "last_verified": "2026-03-15",
+    "status": "Active"
+  },
+  {
+    "id": "pmksy-per-drop-more-crop",
+    "name": "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY) - Per Drop More Crop",
+    "ministry": "Ministry of Agriculture and Farmers Welfare, Govt of India",
+    "level": "Central",
+    "state": "All",
+    "target_beneficiaries": "Small, marginal, and general farmers adopting micro-irrigation",
+    "benefits": "Subsidies ranging from 45% to 55% of the unit cost for installing Drip and Sprinkler irrigation systems to maximize water use efficiency.",
+    "eligibility_criteria": [
+      "Farmer having cultivable land with an assured water source (borewell, open well, or farm pond)",
+      "Preference given to small and marginal farmers"
+    ],
+    "documents_required": [
+      "Land records (7/12, RTC, or Chitta)",
+      "Water source certificate / electricity connection",
+      "Aadhaar Card and Bank Passbook"
+    ],
+    "official_link": "https://pmksy.gov.in",
+    "last_verified": "2026-03-15",
+    "status": "Active"
+  },
+  {
+    "id": "raitha-siri-karnataka",
+    "name": "Raitha Siri Scheme (Karnataka)",
+    "ministry": "Department of Agriculture, Government of Karnataka",
+    "level": "State",
+    "state": "Karnataka",
+    "target_beneficiaries": "Farmers cultivating minor millets (Ragi, Jowar, Bajra, Foxtail millet, etc.) in Karnataka",
+    "benefits": "Direct financial assistance of ₹10,000 per hectare (up to a maximum of 2 hectares) transferred to farmers' bank accounts through DBT for cultivating millets.",
+    "eligibility_criteria": [
+      "Must be a resident farmer of Karnataka",
+      "Land registered in Karnataka FRUITS (Farmer Registration and Unified Beneficiary Information System) database",
+      "Cultivating designated millet crops verified via Crop Survey application"
+    ],
+    "documents_required": [
+      "FID (FRUITS Identification Number)",
+      "Aadhaar Card",
+      "Pahani / RTC",
+      "Bank Account linked with NPCI"
+    ],
+    "official_link": "https://fruits.karnataka.gov.in",
+    "last_verified": "2026-03-15",
+    "status": "Active"
+  },
+  {
+    "id": "up-kisan-karj-rahat",
+    "name": "UP Kisan Uday Yojana & Crop Loan Waiver Schemes",
+    "ministry": "Department of Agriculture, Government of Uttar Pradesh",
+    "level": "State",
+    "state": "Uttar Pradesh",
+    "target_beneficiaries": "Small and marginal farmers of Uttar Pradesh",
+    "benefits": "Subsidized solar pump installations for irrigation and periodic institutional crop loan relief assistance.",
+    "eligibility_criteria": [
+      "Permanent resident farmer of Uttar Pradesh",
+      "Registered on UP Agriculture portal (upagriculture.com)",
+      "Land ownership up to 2 hectares for marginal category"
+    ],
+    "documents_required": [
+      "Khatauni / Khasra land record",
+      "Aadhaar Card",
+      "Bank Passbook",
+      "Kisan Registration ID"
+    ],
+    "official_link": "http://upagriculture.com",
+    "last_verified": "2026-03-15",
+    "status": "Active"
+  }
+]

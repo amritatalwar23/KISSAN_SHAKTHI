@@ -1,0 +1,121 @@
+[
+  {
+    "crop_name": "Ragi (Finger Millet)",
+    "category": "Millets",
+    "seasons": ["Kharif", "Late Kharif"],
+    "soil_types": ["Red sandy loam", "Laterite", "Light black soil", "Alluvial"],
+    "water_requirement": "Low",
+    "water_levels_compatible": ["Low", "Moderate"],
+    "duration_days": "100-120 days",
+    "states_recommended": ["Karnataka", "Tamil Nadu", "Andhra Pradesh", "Odisha", "Maharashtra"],
+    "varieties": ["GPU-28", "ML-365", "KMR-301", "Indaf-9"],
+    "suitability_score_base": 0.95,
+    "rationale": "Extremely drought-tolerant, resilient to erratic rainfall, rich in calcium and dietary fiber. Highly suitable for semi-arid zones and shallow soils.",
+    "key_risks_and_cautions": [
+      "Vulnerable to blast disease (Magnaporthe grisea) during continuous humid cloudy weather.",
+      "Requires proper seed treatment with Trichoderma viride or carbendazim."
+    ]
+  },
+  {
+    "crop_name": "Maize (Corn)",
+    "category": "Cereals",
+    "seasons": ["Kharif", "Rabi", "Spring"],
+    "soil_types": ["Well-drained loamy", "Alluvial", "Red loam", "Deep black soil"],
+    "water_requirement": "Moderate",
+    "water_levels_compatible": ["Moderate", "High"],
+    "duration_days": "90-110 days",
+    "states_recommended": ["Karnataka", "Madhya Pradesh", "Bihar", "Rajasthan", "Uttar Pradesh", "Telangana"],
+    "varieties": ["Deccan-103", "HQPM-1", "DHM-117", "CP-818"],
+    "suitability_score_base": 0.90,
+    "rationale": "High biomass yield and strong commercial demand for poultry feed, starch industry, and silage. Very responsive to balanced NPK application.",
+    "key_risks_and_cautions": [
+      "High susceptibility to Fall Armyworm (Spodoptera frugiperda); monitor early whorl stage.",
+      "Cannot tolerate waterlogging; ensure ridge-and-furrow planting or good drainage."
+    ]
+  },
+  {
+    "crop_name": "Potato",
+    "category": "Horticultural / Tuber",
+    "seasons": ["Rabi", "Autumn"],
+    "soil_types": ["Sandy loam", "Silt loam", "Alluvial", "Well-aerated loose soil"],
+    "water_requirement": "Moderate",
+    "water_levels_compatible": ["Moderate", "High"],
+    "duration_days": "80-100 days",
+    "states_recommended": ["Uttar Pradesh", "West Bengal", "Bihar", "Gujarat", "Punjab", "Karnataka"],
+    "varieties": ["Kufri Pukhraj", "Kufri Jyoti", "Kufri Bahar", "Kufri Chipsona-1"],
+    "suitability_score_base": 0.88,
+    "rationale": "High economic return per unit area. Cool nights (15-20°C) during tuberization promote rapid bulking.",
+    "key_risks_and_cautions": [
+      "Extremely sensitive to Late Blight (Phytophthora infestans) when humidity exceeds 85% with cool rains.",
+      "Requires certified disease-free seed tubers and prophylactic copper/mancozeb sprays."
+    ]
+  },
+  {
+    "crop_name": "Tomato",
+    "category": "Vegetables",
+    "seasons": ["Kharif", "Rabi", "Zaid"],
+    "soil_types": ["Well-drained sandy loam", "Red loam", "Clay loam with good organic matter"],
+    "water_requirement": "Moderate",
+    "water_levels_compatible": ["Moderate", "High"],
+    "duration_days": "110-140 days",
+    "states_recommended": ["Andhra Pradesh", "Madhya Pradesh", "Karnataka", "Maharashtra", "Gujarat", "Odisha"],
+    "varieties": ["Arka Rakshak (triple disease resistant)", "Arka Saurabh", "Pusa Ruby", "Abhinav"],
+    "suitability_score_base": 0.87,
+    "rationale": "Continuous harvesting window provides periodic cash flow. High yield potential with drip irrigation and trellising.",
+    "key_risks_and_cautions": [
+      "Susceptible to Tomato Leaf Curl Virus (ToLCV) transmitted by whiteflies and early/late blight.",
+      "Excessive moisture or rainfall during flowering leads to blossom drop and fruit cracking."
+    ]
+  },
+  {
+    "crop_name": "Bengal Gram (Chickpea / Chana)",
+    "category": "Pulses",
+    "seasons": ["Rabi"],
+    "soil_types": ["Medium to deep black soil", "Clay loam", "Alluvial"],
+    "water_requirement": "Low",
+    "water_levels_compatible": ["Low", "Moderate"],
+    "duration_days": "90-110 days",
+    "states_recommended": ["Madhya Pradesh", "Maharashtra", "Rajasthan", "Karnataka", "Uttar Pradesh"],
+    "varieties": ["JG-11", "JAKI-9218", "Pusa-362", "MNK-1"],
+    "suitability_score_base": 0.92,
+    "rationale": "Fixes atmospheric nitrogen improving soil fertility. Flourishes on residual soil moisture after Kharif harvest.",
+    "key_risks_and_cautions": [
+      "Vulnerable to Fusarium wilt and Pod borer (Helicoverpa armigera).",
+      "Avoid heavy irrigation during vegetative stage to prevent excessive foliage at cost of flowering."
+    ]
+  },
+  {
+    "crop_name": "Paddy (Rice)",
+    "category": "Cereals",
+    "seasons": ["Kharif", "Rabi"],
+    "soil_types": ["Heavy clay", "Clayey loam", "Alluvial", "Lowland black soil"],
+    "water_requirement": "High",
+    "water_levels_compatible": ["High"],
+    "duration_days": "120-150 days",
+    "states_recommended": ["West Bengal", "Uttar Pradesh", "Punjab", "Andhra Pradesh", "Karnataka", "Telangana", "Tamil Nadu"],
+    "varieties": ["BPT-5204 (Samba Mahsuri)", "MTU-1010", "IR-64", "Jaya"],
+    "suitability_score_base": 0.89,
+    "rationale": "High staple demand and guaranteed minimum support price (MSP) procurement in notified mandis.",
+    "key_risks_and_cautions": [
+      "Requires high assured irrigation (1200-1500 mm). Do not recommend in water-stressed or deficit borewell areas.",
+      "Prone to Bacterial Leaf Blight, Blast, and Brown Planthopper (BPH)."
+    ]
+  },
+  {
+    "crop_name": "Red Gram (Pigeonpea / Tur)",
+    "category": "Pulses",
+    "seasons": ["Kharif"],
+    "soil_types": ["Deep black cotton soil", "Loamy soils with good internal drainage"],
+    "water_requirement": "Low",
+    "water_levels_compatible": ["Low", "Moderate"],
+    "duration_days": "150-180 days",
+    "states_recommended": ["Maharashtra", "Karnataka", "Madhya Pradesh", "Gujarat", "Telangana"],
+    "varieties": ["TS-3R", "GRG-811", "ICPL-87119 (Asha)", "BDN-711"],
+    "suitability_score_base": 0.91,
+    "rationale": "Deep taproot system accesses subsoil moisture; excellent intercrop with Soybean, Groundnut, or Maize.",
+    "key_risks_and_cautions": [
+      "Water stagnation for more than 48 hours causes devastating Phytophthora stem blight.",
+      "Requires pheromone traps for Pod borer monitoring."
+    ]
+  }
+]

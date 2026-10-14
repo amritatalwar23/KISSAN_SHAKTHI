@@ -1,0 +1,50 @@
+[
+  {
+    "id": "doc-001",
+    "title": "Integrated Management of Tomato Late Blight and Early Blight",
+    "source": "ICAR-Indian Institute of Horticultural Research (IIHR), Bengaluru",
+    "publication_year": "2023",
+    "category": "Crop Pathology",
+    "content": "Tomato Early Blight (Alternaria solani) and Late Blight (Phytophthora infestans) represent the two most devastating foliar diseases in tropical tomato farming. Early blight produces brown circular spots with characteristic concentric rings ('target-board' effect) on mature foliage. Late blight manifests as rapid water-soaked lesions that turn dark brown or purplish-black with whitish mildew on the lower surface in humid cool weather (15-20°C, RH > 85%). Management: 1) Certified disease-free seedlings; 2) Maintain 60x45 cm spacing for air circulation; 3) Prophylactic spray of Mancozeb 75% WP @ 2.5 g/liter; 4) In active outbreaks, spray Metalaxyl 8% + Mancozeb 64% WP @ 2.5 g/liter or Cymoxanil 8% + Mancozeb 64% WP @ 2.0 g/liter; 5) Drip irrigation to prevent splash dispersal of spores."
+  },
+  {
+    "id": "doc-002",
+    "title": "Potato Late Blight Forecast and Management Guidelines",
+    "source": "ICAR-Central Potato Research Institute (CPRI), Shimla",
+    "publication_year": "2024",
+    "category": "Crop Pathology",
+    "content": "Late Blight of potato is caused by the oomycete Phytophthora infestans. Under cloudy weather with intermittent rain, temperatures between 10-22°C and high relative humidity (>90%) for 48 consecutive hours, disease epidemics can wipe out 100% of potato crops within a few days. CPRI Advisory: At the first detection of blighted spots, spray systemic fungicides like Metalaxyl-M or Cymoxanil-based combinations. Ensure thorough spray coverage on both sides of leaves. Ten days prior to harvest, cut the haulms (tops) to prevent fungal spores from infecting tubers during digging. Never store infected tubers with healthy seed lots."
+  },
+  {
+    "id": "doc-003",
+    "title": "Fall Armyworm (Spodoptera frugiperda) Management in Maize",
+    "source": "ICAR-Indian Institute of Maize Research (IIMR) & NBAIR",
+    "publication_year": "2023",
+    "category": "Entomology",
+    "content": "Fall Armyworm (FAW) attacks all stages of maize, causing severe leaf skeletonization, pinholes, and chewed whorls loaded with sawdust-like frass. Management protocol: 1) Deep summer plowing to expose pupae to predatory birds; 2) Seed treatment with Cyantraniliprole 19.8% + Thiamethoxam 19.8% FS @ 4 ml/kg seed; 3) Install 5 pheromone traps per acre for early population monitoring; 4) In early vegetative stage (1-20 days), release egg parasitoid Trichogramma pretiosum @ 50,000/acre or apply neem seed kernel extract (NSKE 5%); 5) For heavy whorl damage, apply Emamectin benzoate 5% SG @ 0.4 g/liter or Chlorantraniliprole 18.5% SC @ 0.3 ml/liter directed into the leaf whorl."
+  },
+  {
+    "id": "doc-004",
+    "title": "Soil Health Card Interpretation and Micronutrient Deficiency Rectification",
+    "source": "Ministry of Agriculture and Farmers Welfare & State Agricultural Universities",
+    "publication_year": "2024",
+    "category": "Agronomy & Soil Science",
+    "content": "A standard Soil Health Card tests 12 parameters: Primary Nutrients (N, P, K), Secondary Nutrient (S), Micronutrients (Zn, Fe, Cu, Mn, B), and Physical Parameters (pH, Electrical Conductivity, Organic Carbon). Deficiencies: 1) Zinc deficiency produces 'Khaira' disease in paddy and white bud in maize; rectify by applying Zinc Sulphate @ 25 kg/ha to soil or foliar spray of 0.5% ZnSO4 with 0.25% lime. 2) Iron chlorosis turns young leaves pale yellow or bleached white in calcareous soils; spray 1% Ferrous Sulphate with 0.1% citric acid. 3) Low Organic Carbon (<0.5%) requires incorporation of 5-10 tons/ha of Farm Yard Manure (FYM) or green manuring with Sunnhemp / Dhaincha."
+  },
+  {
+    "id": "doc-005",
+    "title": "Drip Irrigation and Fertigation Best Practices for Horticultural Crops",
+    "source": "University of Agricultural Sciences, Bangalore (UASB)",
+    "publication_year": "2023",
+    "category": "Water Management & Irrigation",
+    "content": "Micro-irrigation achieves 40-60% water savings and increases crop yields by 20-40% compared to surface flood irrigation. In drip fertigation, completely water-soluble fertilizers (such as 19:19:19, Potassium Nitrate 13:0:45, and Calcium Nitrate) are injected directly into irrigation lines. Fertigation frequency should be 2 to 3 times per week, aligning with specific crop phenological stages: vegetative (high N), flowering (balanced N-P-K), and fruit expansion/maturity (high K). Regular acid flushing (dilute hydrochloric or nitric acid @ pH 4.0) prevents dripper clogging caused by calcium and magnesium carbonate precipitates in hard borewell water."
+  },
+  {
+    "id": "doc-006",
+    "title": "Pradhan Mantri Fasal Bima Yojana (PMFBY) Claim Filing Procedures",
+    "source": "National Crop Insurance Portal & Ministry of Agriculture",
+    "publication_year": "2025",
+    "category": "Agricultural Schemes",
+    "content": "Under PMFBY, insured farmers experiencing localized natural calamities (inundation, landslide, hailstorm, cloudburst, cyclonic rains) or post-harvest losses must report crop loss within 72 hours through the Crop Insurance App, toll-free helpline (14447), or to their local agricultural officer/bank branch. Mandatory documentation includes policy number / application receipt, photograph of damaged crop with geo-coordinates, and land survey details. Damage assessment is conducted jointly by the insurance company representative and the state agriculture officer within 10 days of loss notification."
+  }
+]
