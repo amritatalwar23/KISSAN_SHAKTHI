@@ -32,6 +32,7 @@ class QueryRequest(BaseModel):
     query: str = Field(..., min_length=2, json_schema_extra={"example": "My tomato leaves have black spots with yellow halos, what should I do?"})
     language: Optional[str] = Field("en", json_schema_extra={"example": "en"})
     location: Optional[Dict[str, str]] = None
+    history: List[Dict[str, str]] = Field(default_factory=list, max_length=8)
 
 class QueryResponse(BaseModel):
     query: str

@@ -63,6 +63,7 @@ class Settings:
 
         # Optional external API keys
         self.GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+        self.GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
         self.BHASHINI_API_KEY: str = os.getenv("BHASHINI_API_KEY", "")
 
     def _load_env_file(self, env_path: Path):

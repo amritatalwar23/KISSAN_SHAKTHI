@@ -5,6 +5,7 @@ for Indian Central and State agricultural assistance programs.
 """
 
 import json
+import re
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from backend.app.core.config import settings
@@ -44,6 +45,15 @@ class SchemeService:
         category_query = category.strip().lower() if category else None
         crop_query = crop.strip().lower() if crop else None
         keyword_query = keyword.strip().lower() if keyword else None
+        # Farmer questions are full sentences. Match their meaningful terms to
+        # scheme records instead of requiring the entire sentence as a substring.
+        query_terms = set(re.findall(r"[a-z0-9]+", keyword_query or ""))
+        query_terms -= {"the", "and", "for", "from", "about", "what", "which", "how", "can", "tell", "me", "is", "are", "my", "i", "am", "do", "does", "farmer", "farmers", "scheme", "schemes", "please", "benefits", "benefit"}
+        aliases = {
+            "pmkisan": {"pm", "kisan", "pmkisan"}, "pm-kisan": {"pm", "kisan", "pmkisan"},
+            "pmfby": {"pmfby", "insurance", "crop"}, "loan": {"credit", "kcc"},
+            "subsidy": {"subsidy", "support"}, "insurance": {"insurance", "pmfby"},
+        }
 
         for item in self.schemes:
             # 1. State filter: match state specifically or All-India central schemes
@@ -62,16 +72,29 @@ class SchemeService:
                         continue
 
             # 3. Keyword search
-            if keyword_query:
+            if query_terms:
                 combined_text = (
                     f"{item.get('name', '')} {item.get('benefits', '')} "
                     f"{' '.join(item.get('eligibility_criteria', []))} "
                     f"{item.get('target_beneficiaries', '')}"
                 ).lower()
-                if keyword_query not in combined_text:
+                record_terms = set(re.findall(r"[a-z0-9]+", combined_text))
+                expanded_terms = set(query_terms)
+                for term in query_terms:
+                    expanded_terms.update(aliases.get(term, set()))
+                matched = expanded_terms & record_terms
+                # Keep a record when it matches at least one specific user term.
+                if not matched:
                     continue
 
+                item = dict(item)
+                item["_match_score"] = len(matched)
             results.append(item)
+
+        if query_terms:
+            results.sort(key=lambda item: item.get("_match_score", 0), reverse=True)
+            for item in results:
+                item.pop("_match_score", None)
 
         disclaimer = (
             "Disclaimer: Scheme information is compiled from official government portals and gazettes. "

@@ -85,7 +85,8 @@ def orchestrate_query(req: QueryRequest):
         res = orchestrator_service.route_and_execute(
             query=req.query,
             user_language=req.language,
-            location=req.location
+            location=req.location,
+            conversation_history=req.history
         )
         return res
     except Exception as e:

@@ -36,6 +36,13 @@ CUSTOM_CSS = """
         color: #1B5E20 !important;
         font-weight: 700;
     }
+
+    /* Keep chat replies and their optional reference panel readable across themes. */
+    div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] *,
+    div[data-testid="stExpander"] div[data-testid="stMarkdownContainer"] *,
+    div[data-testid="stExpander"] [data-testid="stCaptionContainer"] {
+        color: #000000 !important;
+    }
     
     /* Card Container */
     .agri-card {
@@ -102,7 +109,7 @@ CUSTOM_CSS = """
         box-shadow: 0 8px 24px rgba(27, 94, 32, 0.15);
     }
     .hero-title {
-        color: #FFFFFF !important;
+        color: #000000 !important;
         font-size: 2.3rem;
         font-weight: 800;
         margin-bottom: 8px;
@@ -190,6 +197,73 @@ def render_disclaimer():
         Field diagnoses and financial commitments must be validated with certified agricultural officers or Krishi Vigyan Kendra (KVK) specialists.
     </div>
     """, unsafe_allow_html=True)
+
+
+def render_more_info(sources=None, details=None, warning=None):
+    """Keep citations and full retrieved material available without crowding chat replies."""
+    sources = sources or []
+    details = details or {}
+    if not sources and not details and not warning:
+        return
+
+    with st.expander("More info & source documents"):
+        if sources:
+            st.markdown("**Sources**")
+            for index, source in enumerate(sources, start=1):
+                source = str(source)
+                if source.startswith(("https://", "http://")):
+                    host = source.split("//", 1)[-1].split("/", 1)[0]
+                    st.markdown(f"- [Open official source: {host}]({source})")
+                else:
+                    st.markdown(f"- {source}")
+
+        chunks = details.get("retrieved_chunks", []) if isinstance(details, dict) else []
+        if chunks:
+            st.markdown("**Retrieved guidance**")
+            for chunk in chunks:
+                st.markdown(f"**{chunk.get('title', 'Advisory excerpt')}**")
+                attribution = " · ".join(str(value) for value in [chunk.get("source"), chunk.get("publication")] if value)
+                if attribution:
+                    st.caption(attribution)
+                st.write(chunk.get("content", ""))
+
+        if isinstance(details, dict) and details.get("full_advisory"):
+            st.markdown("**Full advisory text**")
+            st.markdown(details["full_advisory"])
+
+        if isinstance(details, dict) and details.get("schemes"):
+            st.markdown("**Scheme details**")
+            for scheme in details["schemes"]:
+                st.markdown(f"**{scheme.get('name', 'Scheme')}**")
+                st.write(scheme.get("benefits", ""))
+                criteria = scheme.get("eligibility_criteria", [])
+                if criteria:
+                    st.caption("Eligibility: " + "; ".join(criteria))
+                if scheme.get("official_link"):
+                    st.markdown(f"[Official scheme page]({scheme['official_link']})")
+
+        if isinstance(details, dict) and details.get("contacts"):
+            st.markdown("**Local support contacts**")
+            for contact in details["contacts"]:
+                st.markdown(f"**{contact.get('name', 'Agriculture support')}**")
+                st.write(contact.get("address", ""))
+                if contact.get("phone"):
+                    st.write(f"Phone: {contact['phone']}")
+                if contact.get("email"):
+                    st.write(f"Email: {contact['email']}")
+                if contact.get("official_link"):
+                    st.markdown(f"[Contact website]({contact['official_link']})")
+
+        if isinstance(details, dict) and details.get("recommendations"):
+            st.markdown("**Crop shortlist details**")
+            for crop in details["recommendations"][:5]:
+                st.markdown(f"**{crop.get('crop_name', 'Crop')}** — {crop.get('suitability_score', 'n/a')} rule score")
+                st.write(crop.get("rationale", ""))
+            for assumption in details.get("assumptions", []):
+                st.caption(assumption)
+
+        if warning:
+            st.caption(f"Note: {warning}")
 
 
 # ---------------------------------------------------------
@@ -341,6 +415,7 @@ elif navigation == "🔬 Crop Disease Detection":
 elif navigation == "💬 Agricultural AI Assistant":
     st.title("💬 Kisan Shakti Agricultural Assistant")
     st.markdown("Ask questions on crop diseases, nutrient deficiencies, pest control, weather precautions, or farming practices.")
+    st.caption("Try asking about cyclone/flood preparation, irrigation, soil tests and fertilizer, pest control, seeds and sowing, crop choice, harvesting/storage, schemes, or your nearest KVK. Include your crop, district, and growth stage for more specific guidance.")
     render_disclaimer()
 
     if "chat_history" not in st.session_state:
@@ -356,13 +431,19 @@ elif navigation == "💬 Agricultural AI Assistant":
     for msg in st.session_state.chat_history:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
-            if msg.get("sources"):
-                st.caption(f"📚 **Sources:** {', '.join(msg['sources'])}")
+        if msg["role"] == "assistant":
+            try:
+                render_more_info(sources=msg.get("sources"), details=msg.get("structured_data"), warning=msg.get("warning"))
+            except Exception:
+                st.caption("More information is temporarily unavailable.")
 
     # Chat Input
     user_input = st.chat_input("Type your farming question (English, Kannada, or Hindi)...")
     if user_input:
         st.session_state.chat_history.append({"role": "user", "content": user_input})
+        response_sources = []
+        response_details = {}
+        response_warning = None
         with st.chat_message("user"):
             st.markdown(user_input)
 
@@ -372,29 +453,54 @@ elif navigation == "💬 Agricultural AI Assistant":
                     payload = {
                         "query": user_input,
                         "language": lang_code,
-                        "location": {"state": "Karnataka"}
+                        "location": {"state": "Karnataka"},
+                        "history": [
+                            {"role": msg.get("role", "user"), "content": str(msg.get("content", ""))}
+                            for msg in st.session_state.chat_history[:-1][-8:]
+                            if msg.get("role") in ("user", "assistant")
+                        ]
                     }
-                    res = requests.post(f"{BACKEND_API_BASE}/query", json=payload, timeout=12)
+                    res = requests.post(f"{BACKEND_API_BASE}/query", json=payload, timeout=35)
                     if res.status_code == 200:
                         data = res.json()
-                        st.markdown(data["answer"])
-                        
-                        if data.get("warning"):
+                        answer = str(data.get("answer") or "").strip()
+                        if not answer:
+                            answer = "I couldn't prepare an answer for that question. Please try adding the crop and the specific issue."
+                        st.markdown(answer)
+                        response_sources = data.get("sources", [])
+                        response_details = data.get("structured_data", {})
+                        response_warning = data.get("warning")
+                        if data.get("warning") and data.get("routed_module") == "wellbeing":
                             st.warning(data["warning"])
-
-                        if data.get("sources"):
-                            st.caption(f"📚 **Sources:** {', '.join(data['sources'])}")
 
                         st.session_state.chat_history.append({
                             "role": "assistant",
-                            "content": data["answer"],
-                            "sources": data.get("sources", [])
+                            "content": answer,
+                            "sources": data.get("sources", []),
+                            "structured_data": data.get("structured_data", {}),
+                            "warning": data.get("warning")
                         })
                     else:
-                        err_msg = f"Failed to get response (Status {res.status_code})"
+                        err_msg = f"I couldn't process that question (server returned {res.status_code}). Please try again."
                         st.error(err_msg)
-                except requests.exceptions.ConnectionError:
-                    st.error("Backend server unreachable. Please run `python scripts/run_backend.py`.")
+                        st.session_state.chat_history.append({"role": "assistant", "content": err_msg, "sources": []})
+                except requests.exceptions.RequestException as e:
+                    err_msg = "I can't reach the assistant service right now. Please check that the backend is running and try again."
+                    st.error(f"{err_msg} ({e})")
+                    st.session_state.chat_history.append({"role": "assistant", "content": err_msg, "sources": []})
+                except Exception as e:
+                    err_msg = "I hit a display error while preparing that reply. Please try the question again."
+                    st.error(f"{err_msg} ({e})")
+                    st.session_state.chat_history.append({"role": "assistant", "content": err_msg, "sources": []})
+
+        if response_sources or response_details or response_warning:
+            try:
+                render_more_info(sources=response_sources, details=response_details, warning=response_warning)
+            except Exception:
+                st.caption("More information is temporarily unavailable.")
+        # Rebuild the transcript from session state so the reply remains visible
+        # after Streamlit finishes handling the submitted chat input.
+        st.rerun()
 
 
 # ---------------------------------------------------------
