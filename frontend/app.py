@@ -342,6 +342,11 @@ elif navigation == "🔬 Crop Disease Detection":
 
     with col_upload:
         st.markdown("### 📤 Upload Leaf Photo")
+        crop_selection = st.selectbox(
+            "🌱 Crop Type",
+            ["Auto-detect", "Tomato", "Potato", "Corn (Maize)"],
+            help="Select the crop if you already know it, or leave as Auto-detect."
+        )
         uploaded_file = st.file_uploader(
             "Choose a leaf image (JPG, PNG, WEBP, max 10MB)",
             type=["jpg", "jpeg", "png", "webp"],
@@ -362,7 +367,10 @@ elif navigation == "🔬 Crop Disease Detection":
                 try:
                     uploaded_file.seek(0)
                     files = {"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
-                    res = requests.post(f"{BACKEND_API_BASE}/predict/disease", files=files, timeout=15)
+                    data_payload = {}
+                    if crop_selection != "Auto-detect":
+                        data_payload["crop_hint"] = crop_selection
+                    res = requests.post(f"{BACKEND_API_BASE}/predict/disease", files=files, data=data_payload, timeout=15)
                     
                     if res.status_code == 200:
                         data = res.json()

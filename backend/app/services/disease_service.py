@@ -1,7 +1,7 @@
 """Crop Disease Detection Service.
 
 Provides image validation, preprocessing, MobileNetV3 transfer learning inference,
-uncertainty thresholding, out-of-distribution safeguards, and grounded ICAR advisory retrieval.
+crop-aware filtering, uncertainty thresholding, and grounded ICAR advisory retrieval.
 """
 
 import io
@@ -138,8 +138,8 @@ class DiseaseService:
 
         return True, None, img
 
-    def predict(self, image_bytes: bytes, filename: str = "leaf.jpg") -> Dict[str, Any]:
-        """Runs validation, preprocessing, inference, and advisory retrieval."""
+    def predict(self, image_bytes: bytes, filename: str = "leaf.jpg", crop_hint: Optional[str] = None) -> Dict[str, Any]:
+        """Runs validation, preprocessing, inference, and advisory retrieval with optional crop filtering."""
         is_valid, error_msg, img = self.validate_image_bytes(image_bytes, filename)
         if not is_valid or img is None:
             return {
@@ -177,20 +177,48 @@ class DiseaseService:
             with torch.no_grad():
                 logits = self.model(tensor)
                 probabilities = torch.softmax(logits, dim=1).squeeze(0)
-                top_k_probs, top_k_indices = torch.topk(probabilities, k=min(3, len(self.classes)))
 
-                top_class_id = int(top_k_indices[0].item())
-                top_prob = float(top_k_probs[0].item())
+                # Optional Crop-Specific Filtering (e.g., farmer selects "Tomato")
+                target_ids = None
+                if crop_hint and crop_hint.lower() not in ("auto", "all", "auto-detect", "none"):
+                    matched_ids = [c["id"] for c in self.classes if crop_hint.lower() in c.get("crop", "").lower()]
+                    if matched_ids:
+                        target_ids = matched_ids
 
-                for p, idx in zip(top_k_probs[1:], top_k_indices[1:]):
-                    alt_id = int(idx.item())
-                    alt_info = self.id_to_info.get(alt_id, {"raw_class": f"Class_{alt_id}", "crop": "Unknown", "disease": "Unknown"})
-                    top_alternatives.append({
-                        "label": alt_info.get("raw_class", ""),
-                        "crop": alt_info.get("crop", "Unknown"),
-                        "disease": alt_info.get("disease", "Unknown"),
-                        "confidence": round(float(p.item()), 4)
-                    })
+                if target_ids:
+                    # Re-normalize probabilities over the farmer's designated crop
+                    sub_probs = probabilities[target_ids]
+                    sub_probs_norm = sub_probs / (sub_probs.sum() + 1e-8)
+                    k_val = min(3, len(target_ids))
+                    top_k_probs, top_k_indices = torch.topk(sub_probs_norm, k=k_val)
+
+                    top_class_id = target_ids[top_k_indices[0].item()]
+                    top_prob = float(top_k_probs[0].item())
+
+                    for p, idx in zip(top_k_probs[1:], top_k_indices[1:]):
+                        alt_id = target_ids[idx.item()]
+                        alt_info = self.id_to_info.get(alt_id, {"raw_class": f"Class_{alt_id}", "crop": "Unknown", "disease": "Unknown"})
+                        top_alternatives.append({
+                            "label": alt_info.get("raw_class", ""),
+                            "crop": alt_info.get("crop", "Unknown"),
+                            "disease": alt_info.get("disease", "Unknown"),
+                            "confidence": round(float(p.item()), 4)
+                        })
+                else:
+                    # Standard Auto-detection across all 17 classes
+                    top_k_probs, top_k_indices = torch.topk(probabilities, k=min(3, len(self.classes)))
+                    top_class_id = int(top_k_indices[0].item())
+                    top_prob = float(top_k_probs[0].item())
+
+                    for p, idx in zip(top_k_probs[1:], top_k_indices[1:]):
+                        alt_id = int(idx.item())
+                        alt_info = self.id_to_info.get(alt_id, {"raw_class": f"Class_{alt_id}", "crop": "Unknown", "disease": "Unknown"})
+                        top_alternatives.append({
+                            "label": alt_info.get("raw_class", ""),
+                            "crop": alt_info.get("crop", "Unknown"),
+                            "disease": alt_info.get("disease", "Unknown"),
+                            "confidence": round(float(p.item()), 4)
+                        })
         except Exception as e:
             logger.error(f"Inference execution failed: {e}")
             return {
@@ -220,7 +248,6 @@ class DiseaseService:
         source = matched_info.get("source", "ICAR Extension Services")
 
         # Uncertainty Handling
-        # If the model is not trained yet or confidence is below threshold:
         status = "confident"
         warning = None
 

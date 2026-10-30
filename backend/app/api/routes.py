@@ -56,7 +56,10 @@ def health_check():
 
 
 @router.post("/predict/disease", response_model=DiseasePredictionResponse, tags=["Crop Health"])
-async def predict_disease(file: UploadFile = File(...)):
+async def predict_disease(
+    file: UploadFile = File(...),
+    crop_hint: Optional[str] = Form(None)
+):
     """Diagnoses crop disease from uploaded leaf image using MobileNetV3 deep learning."""
     # Validate content type
     allowed_types = ["image/jpeg", "image/png", "image/webp", "image/jpg"]
@@ -68,7 +71,7 @@ async def predict_disease(file: UploadFile = File(...)):
 
     try:
         image_bytes = await file.read()
-        result = disease_service.predict(image_bytes, filename=file.filename or "upload.jpg")
+        result = disease_service.predict(image_bytes, filename=file.filename or "upload.jpg", crop_hint=crop_hint)
         return result
     except Exception as e:
         logger.error(f"Error in /predict/disease endpoint: {e}")
