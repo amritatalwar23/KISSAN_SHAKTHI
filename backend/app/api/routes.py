@@ -1,9 +1,12 @@
 """FastAPI REST API Endpoints for Kisan Shakti."""
 
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, status
+from fastapi.responses import Response
+from starlette.concurrency import run_in_threadpool
 from typing import Optional, Dict, Any
 
 from backend.app.schemas.schemas import (
+    SpeakRequest,
     HealthResponse,
     DiseasePredictionResponse,
     QueryRequest,
@@ -29,6 +32,7 @@ from backend.app.services.wellbeing_service import wellbeing_service
 from backend.app.services.rag_service import rag_service
 from backend.app.services.multilingual_service import multilingual_service
 from backend.app.services.orchestrator_service import orchestrator_service
+from backend.app.services.voice_service import voice_service
 from backend.app.database.db import get_analytics_summary
 from backend.app.core.logging import logger
 
@@ -210,3 +214,59 @@ def get_analytics():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Analytics retrieval error: {str(e)}"
         )
+
+
+async def _read_audio(file: UploadFile) -> bytes:
+    audio = await file.read()
+    if len(audio) < 1000:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Audio clip is empty or too short")
+    if len(audio) > 25 * 1024 * 1024:
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail="Audio clip exceeds 25 MB")
+    return audio
+
+
+@router.post("/voice/transcribe", tags=["Voice"])
+async def transcribe_voice(file: UploadFile = File(...), language: Optional[str] = Form(None)):
+    """Speech-to-text for a recorded or uploaded clip (Whisper, runs locally)."""
+    audio = await _read_audio(file)
+    try:
+        return await run_in_threadpool(voice_service.transcribe, audio, language)
+    except Exception as e:
+        logger.error(f"Error in /voice/transcribe endpoint: {e}")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=f"Could not decode audio: {e}")
+
+
+@router.post("/voice/speak", tags=["Voice"])
+def speak_text(req: SpeakRequest):
+    """Text-to-speech; returns an MP3 of the text in the requested language."""
+    try:
+        return Response(content=voice_service.synthesize(req.text, req.language or "en"), media_type="audio/mpeg")
+    except Exception as e:
+        logger.error(f"Error in /voice/speak endpoint: {e}")
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"Speech synthesis unavailable: {e}")
+
+
+@router.post("/voice/query", tags=["Voice"])
+async def voice_query(
+    file: UploadFile = File(...),
+    language: Optional[str] = Form(None),
+    state: Optional[str] = Form("Karnataka"),
+):
+    """Full voice loop: transcribe the clip, then answer it in the spoken language."""
+    audio = await _read_audio(file)
+    try:
+        heard = await run_in_threadpool(voice_service.transcribe, audio, language)
+    except Exception as e:
+        logger.error(f"Error in /voice/query transcription: {e}")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=f"Could not decode audio: {e}")
+    if len(heard["text"]) < 2:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="No speech detected in the clip")
+
+    result = await run_in_threadpool(
+        orchestrator_service.route_and_execute,
+        query=heard["text"],
+        user_language=heard["language"],
+        location={"state": state or "Karnataka"},
+    )
+    result["transcription"] = heard
+    return result

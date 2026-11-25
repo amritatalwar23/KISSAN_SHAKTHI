@@ -171,3 +171,8 @@ class TranslationResponse(BaseModel):
     translated_text: str
     detected_lang: str
     target_lang: str
+
+
+class SpeakRequest(BaseModel):
+    text: str = Field(..., min_length=1)
+    language: Optional[str] = "en"

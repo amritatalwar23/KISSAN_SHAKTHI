@@ -20,6 +20,14 @@ pandas>=2.1.0
 # Optional local vector DB: sentence-transformers, faiss-cpu or chromadb
 # Default retrieval engine utilizes scikit-learn TF-IDF / BM25 / Cosine similarity for 100% offline reliability
 
+# Voice Assistance (speech-to-text, translation, text-to-speech)
+faster-whisper>=1.0.0
+gTTS>=2.5.0
+ctranslate2>=4.0.0
+transformers>=4.40.0
+sentencepiece>=0.2.0
+huggingface_hub>=0.22.0
+
 # Web Frontend & UI
 streamlit>=1.32.0
 plotly>=5.18.0

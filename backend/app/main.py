@@ -16,6 +16,8 @@ async def lifespan(app: FastAPI):
     """Application startup and shutdown lifecycle events."""
     logger.info("Initializing Kisan Shakti database and services...")
     init_db()
+    from backend.app.services.voice_service import voice_service
+    voice_service.warm_up()
     logger.info("Kisan Shakti backend started successfully.")
     yield
     logger.info("Kisan Shakti backend shutting down.")

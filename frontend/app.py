@@ -684,64 +684,115 @@ elif navigation == "🧑‍🌾 Expert & KVK Directory":
 # Module 7: Voice Assistance
 # ---------------------------------------------------------
 elif navigation == "🎙️ Voice Assistance":
+    import hashlib
+
     st.title("🎙️ Multilingual Voice Assistance")
-    st.markdown("Speak your question or upload an audio file to receive spoken and written agricultural guidance.")
+    st.markdown("Speak your question in English, Kannada or Hindi. Kisan Shakti listens, answers in the same language, and reads the answer aloud.")
     render_disclaimer()
 
-    col_voice_l, col_voice_r = st.columns([1, 1])
+    LANG_NAMES = {"en": "English", "kn": "Kannada (ಕನ್ನಡ)", "hi": "Hindi (हिन्दी)"}
 
-    with col_voice_l:
-        st.markdown("### 🗣️ Voice Input")
-        st.info("💡 You can record audio using your device microphone or upload a voice memo (.wav, .mp3).")
-        audio_file = st.file_uploader("Upload audio recording", type=["wav", "mp3", "m4a", "ogg"])
-        
-        simulated_voice_transcripts = {
-            "en": "My tomato leaves have black spots with yellow borders, how can I control it?",
-            "kn": "ನನ್ನ ಟೊಮೆಟೊ ಎಲೆಗಳ ಮೇಲೆ ಕಪ್ಪು ಚುಕ್ಕೆಗಳಿವೆ, ನಾನು ಏನು ಮಾಡಬೇಕು?",
-            "hi": "मेरे आलू के पौधों की पत्तियों पर भूरे धब्बे हैं, इसका क्या इलाज है?"
-        }
+    def speak(text, language):
+        """Fetches MP3 speech for the answer from the backend."""
+        try:
+            tts = requests.post(f"{BACKEND_API_BASE}/voice/speak", json={"text": text, "language": language}, timeout=60)
+            if tts.status_code == 200:
+                return tts.content
+        except requests.exceptions.RequestException:
+            pass
+        return None
 
-        st.markdown("---")
-        st.markdown("##### 🎙️ Quick Speech Simulator (for testing without mic)")
-        if st.button("▶️ Test Voice Query in Current Language"):
-            st.session_state["transcribed_text"] = simulated_voice_transcripts.get(lang_code, simulated_voice_transcripts["en"])
+    def run_voice_query(audio_bytes, filename, language):
+        files = {"file": (filename, audio_bytes)}
+        data = {"state": "Karnataka"}
+        if language != "auto":
+            data["language"] = language
+        res = requests.post(f"{BACKEND_API_BASE}/voice/query", files=files, data=data, timeout=180)
+        if res.status_code != 200:
+            raise RuntimeError(res.json().get("detail", f"Status {res.status_code}"))
+        return res.json()
 
-    with col_voice_r:
-        st.markdown("### 📝 Speech-to-Text Transcription")
-        current_transcription = st.session_state.get("transcribed_text", "")
-        transcribed_input = st.text_area("Recognized Speech", value=current_transcription, height=100)
+    col_cfg1, col_cfg2 = st.columns([1, 1])
+    with col_cfg1:
+        listen_lang = st.selectbox(
+            "Spoken language",
+            ["auto", "en", "kn", "hi"],
+            index=["auto", "en", "kn", "hi"].index(lang_code),
+            format_func=lambda c: "Auto-detect" if c == "auto" else LANG_NAMES[c],
+        )
+    with col_cfg2:
+        speak_aloud = st.toggle("🔊 Read the answer aloud", value=True)
 
-        process_voice = st.button("🚀 Process Voice Query", type="primary")
+    tab_mic, tab_upload, tab_type = st.tabs(["🎤 Record", "📁 Upload a voice note", "⌨️ Type instead"])
+    clip, clip_name = None, None
+    with tab_mic:
+        recorded = st.audio_input("Tap the mic, ask your question, then tap again to stop")
+        if recorded is not None:
+            clip, clip_name = recorded.getvalue(), "recording.wav"
+    with tab_upload:
+        uploaded = st.file_uploader("Voice note (.wav, .mp3, .m4a, .ogg, .webm)", type=["wav", "mp3", "m4a", "ogg", "webm"])
+        if uploaded is not None and clip is None:
+            clip, clip_name = uploaded.getvalue(), uploaded.name
+    with tab_type:
+        typed = st.text_input("Type your question and hear the answer")
+        ask_typed = st.button("Ask", disabled=not typed.strip())
 
-        if process_voice and transcribed_input.strip():
-            with st.spinner("Processing spoken query through orchestrator..."):
+    # Each clip is processed once; Streamlit reruns reuse the stored result.
+    if clip is not None:
+        clip_key = hashlib.sha1(clip).hexdigest() + listen_lang
+        if st.session_state.get("voice_clip_key") != clip_key:
+            with st.spinner("Listening and preparing your answer..."):
                 try:
-                    payload = {
-                        "query": transcribed_input,
-                        "language": lang_code,
-                        "location": {"state": "Karnataka"}
-                    }
-                    res = requests.post(f"{BACKEND_API_BASE}/query", json=payload, timeout=10)
-                    if res.status_code == 200:
-                        data = res.json()
-                        st.markdown("#### 🌾 Advisory Response:")
-                        st.markdown(data["answer"])
-
-                        # Audio playback simulation via browser speech
-                        st.markdown("""
-                        <script>
-                            if ('speechSynthesis' in window) {
-                                let msg = new SpeechSynthesisUtterance();
-                                msg.text = "Query answered successfully by Kisan Shakti.";
-                                window.speechSynthesis.speak(msg);
-                            }
-                        </script>
-                        """, unsafe_allow_html=True)
-                        st.success("🔊 Spoken audio synthesis ready.")
-                    else:
-                        st.error("Error generating answer.")
+                    st.session_state["voice_result"] = run_voice_query(clip, clip_name, listen_lang)
+                    st.session_state["voice_clip_key"] = clip_key
+                    st.session_state.pop("voice_audio", None)
                 except Exception as e:
-                    st.error(f"Backend error: {e}")
+                    st.session_state.pop("voice_result", None)
+                    st.error(f"Could not process the recording: {e}")
+    elif ask_typed:
+        with st.spinner("Preparing your answer..."):
+            res = requests.post(f"{BACKEND_API_BASE}/query", json={
+                "query": typed, "language": lang_code if listen_lang == "auto" else listen_lang,
+                "location": {"state": "Karnataka"}}, timeout=60)
+            if res.status_code == 200:
+                st.session_state["voice_result"] = res.json()
+                st.session_state["voice_clip_key"] = None
+                st.session_state.pop("voice_audio", None)
+            else:
+                st.error("Error generating answer.")
+
+    result = st.session_state.get("voice_result")
+    if result:
+        st.markdown("---")
+        heard = result.get("transcription")
+        if heard:
+            st.markdown(f"#### 🗣️ You said ({LANG_NAMES.get(heard['language'], heard['language'])}, {heard['duration_seconds']}s)")
+            st.info(heard["text"])
+        else:
+            st.markdown("#### 🗣️ You asked")
+            st.info(result["query"])
+
+        st.markdown(f"#### 🌾 Answer · routed to `{result['routed_module']}`")
+        st.markdown(result["answer"])
+        if result.get("answer_en") and result["answer_en"] != result["answer"]:
+            with st.expander("Show the English original"):
+                st.markdown(result["answer_en"])
+        if result.get("warning"):
+            st.warning(result["warning"])
+        if result.get("sources"):
+            st.caption(f"📚 **Sources:** {', '.join(result['sources'])}")
+
+        if speak_aloud:
+            if "voice_audio" not in st.session_state:
+                with st.spinner("Generating speech..."):
+                    st.session_state["voice_audio"] = speak(result["answer"], result["language"])
+                autoplay = True
+            else:
+                autoplay = False
+            if st.session_state["voice_audio"]:
+                st.audio(st.session_state["voice_audio"], format="audio/mpeg", autoplay=autoplay)
+            else:
+                st.caption("🔇 Speech is unavailable right now (needs an internet connection).")
 
 
 # ---------------------------------------------------------
